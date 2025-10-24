@@ -32,6 +32,11 @@ public class ProductService {
         return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
     }
 
+    public List<ProductDTO> findByDescription(String text) {
+        List<Product> list = productRepository.findByDescription("%"+text+"%");
+        return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
+    }
+
     private Product getById(UUID id) {
         Optional<Product> result = productRepository.findById(id);
         return result.orElseThrow(() -> new ResourceNotFoundException("Id não encontrado!"));
