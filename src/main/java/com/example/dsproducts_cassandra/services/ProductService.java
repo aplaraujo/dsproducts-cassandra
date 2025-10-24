@@ -7,8 +7,10 @@ import com.example.dsproducts_cassandra.services.exceptions.ResourceNotFoundExce
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -20,8 +22,14 @@ public class ProductService {
         return new ProductDTO(entity);
     }
 
+    public List<ProductDTO> findByDepartment(String department) {
+        List<Product> list = productRepository.findByDepartment(department);
+        return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
+    }
+
     private Product getById(UUID id) {
         Optional<Product> result = productRepository.findById(id);
         return result.orElseThrow(() -> new ResourceNotFoundException("Id não encontrado!"));
     }
+
 }
