@@ -3,6 +3,7 @@ package com.example.dsproducts_cassandra.controllers;
 import com.example.dsproducts_cassandra.model.dto.DepartmentDTO;
 import com.example.dsproducts_cassandra.model.entities.Department;
 import com.example.dsproducts_cassandra.services.DepartmentService;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,12 @@ public class DepartmentController {
         dto = departmentService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<DepartmentDTO> update(@PathVariable UUID id, @RequestBody DepartmentDTO dto)
+            throws InvalidDefinitionException {
+        dto = departmentService.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 }
